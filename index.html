@@ -143,42 +143,42 @@ hr{border:none;border-top:1px solid #e5e7eb;margin:12px 0;}
 <div class="form-item">
 <label>机洗 <span style="color:#888;font-size:12px;">1分/次</span></label>
 <div class="input-wrap">
-<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次1分">
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
 <span class="input-suffix">次</span>
 </div>
 </div>
 <div class="form-item">
 <label>故障假设 <span style="color:#888;font-size:12px;">2分/个</span></label>
 <div class="input-wrap">
-<input type="number" step="1" min="0" value="0" class="once-input" data-price="2" data-unit="个2分">
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="2" data-unit="个">
 <span class="input-suffix">个</span>
 </div>
 </div>
 <div class="form-item">
 <label>更换备品 <span style="color:#888;font-size:12px;">2分/件</span></label>
 <div class="input-wrap">
-<input type="number" step="1" min="0" value="0" class="once-input" data-price="2" data-unit="件2分">
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="2" data-unit="件">
 <span class="input-suffix">件</span>
 </div>
 </div>
 <div class="form-item">
 <label>更换备品复检 <span style="color:#888;font-size:12px;">1分/件</span></label>
 <div class="input-wrap">
-<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="件1分">
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="件">
 <span class="input-suffix">件</span>
 </div>
 </div>
 <div class="form-item">
 <label>厂家整改复检 <span style="color:#888;font-size:12px;">1分/次</span></label>
 <div class="input-wrap">
-<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次1分">
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
 <span class="input-suffix">次</span>
 </div>
 </div>
 <div class="form-item">
 <label>消防巡查 <span style="color:#888;font-size:12px;">1分/次</span></label>
 <div class="input-wrap">
-<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次1分">
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
 <span class="input-suffix">次</span>
 </div>
 </div>
@@ -215,12 +215,12 @@ var totalScoreDom=document.getElementById('totalScore');
 var toast=document.getElementById('toast');
 
 var modeMap={
-'stand10':{name:'驻站',score:10,showName:'驻站10分',displayName:'驻站（10分）'},
-'stand6':{name:'17:30-23:00驻站',score:6,showName:'17:30-23:00驻站6分',displayName:'17:30-23:00 驻站（6分）'},
-'stand4':{name:'6:00-8:30驻站',score:4,showName:'6:00-8:30驻站4分',displayName:'6:00-8:30 驻站（4分）'},
-'power':{name:'断送电',score:5,showName:'断送电5分',displayName:'断送电'},
-'morningPower':{name:'早起+断送电',score:13,showName:'早起8分，断送电5分',displayName:'早起+断送电'},
-'follow':{name:'跟活',score:0,showName:'跟活',displayName:'跟活'}
+'stand10':{score:10,showName:'驻站10分',displayName:'驻站（10分）'},
+'stand6':{score:6,showName:'17:30-23:00驻站6分',displayName:'17:30-23:00 驻站（6分）'},
+'stand4':{score:4,showName:'6:00-8:30驻站4分',displayName:'6:00-8:30 驻站（4分）'},
+'power':{score:5,showName:'断送电5分',displayName:'断送电'},
+'morningPower':{score:13,showName:'早起8分，断送电5分',displayName:'早起+断送电'},
+'follow':{score:0,showName:'跟活',displayName:'跟活'}
 };
 
 function showToast(msg){
@@ -239,55 +239,61 @@ resMode.textContent=modeInfo.displayName;
 var items=[];
 items.push(site+modeInfo.showName);
 
+// 按列作业（恢复原版展示：标签+数量+列+小计分+分）
 var columnScore=0;
 colInputs.forEach(function(input){
 var num=parseFloat(input.value)||0;
 var price=parseFloat(input.dataset.price);
-columnScore += num * price;
+var itemScore=num*price; // 数量×单价
+columnScore+=itemScore;
 if(num>0){
 var label=input.parentElement.parentElement.querySelector('label').innerText.split(' ')[0];
-var itemScore = num * price;
 items.push(label+num+'列'+itemScore+'分');
 }
 });
 
+// 按次/件作业（恢复原版展示：标签+数量+单位+小计分+分）
 var onceScore=0;
 onceInputs.forEach(function(input){
 var num=parseFloat(input.value)||0;
 var price=parseFloat(input.dataset.price);
-var unit=input.dataset.unit;
-onceScore += num * price;
+var unit=input.dataset.unit; // "次"/"个"/"件"
+var itemScore=num*price; // 数量×单价 ← 关键：这里一定乘了
+onceScore+=itemScore;
 if(num>0){
 var label=input.parentElement.parentElement.querySelector('label').innerText.split(' ')[0];
-items.push(label+num+unit);
+// 展示：标签+数量+单位+小计分+分，例如 "故障假设2个4分"
+items.push(label+num+unit+itemScore+'分');
 }
 });
 
 var lineStr=items.join('，');
 lineResult.textContent=lineStr;
-var totalRaw = modeInfo.score + columnScore + onceScore;
-totalScoreDom.textContent = totalRaw;
+var totalRaw=modeInfo.score+columnScore+onceScore;
+totalScoreDom.textContent=totalRaw;
 }
 
 function copyText(){
-var txt = lineResult.textContent.trim();
+var txt=lineResult.textContent.trim();
 if(txt==='请填写作业数量'){showToast('暂无可复制内容，请先填写作业数据！');return;}
-if(navigator.clipboard&&window.isSecureContext){
-navigator.clipboard.writeText(txt).then(function(){showToast('结果已复制 ✓');},function(){manualCopy(txt,'结果已复制 ✓');});
-}else{manualCopy(txt,'结果已复制 ✓');}
+doCopy(txt,'结果已复制 ✓');
 }
 
 function copyTotalScore(){
 var modeKey=modeSel.value;
 var modeInfo=modeMap[modeKey];
 var colS=0;
-colInputs.forEach(function(i){colS+= (parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
+colInputs.forEach(function(i){colS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
 var onceS=0;
-onceInputs.forEach(function(i){onceS+= (parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
+onceInputs.forEach(function(i){onceS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
 var scoreText=String(modeInfo.score+colS+onceS);
+doCopy(scoreText,'总分已复制 ✓');
+}
+
+function doCopy(text,msg){
 if(navigator.clipboard&&window.isSecureContext){
-navigator.clipboard.writeText(scoreText).then(function(){showToast('总分已复制 ✓');},function(){manualCopy(scoreText,'总分已复制 ✓');});
-}else{manualCopy(scoreText,'总分已复制 ✓');}
+navigator.clipboard.writeText(text).then(function(){showToast(msg);},function(){manualCopy(text,msg);});
+}else{manualCopy(text,msg);}
 }
 
 function manualCopy(text,msg){
