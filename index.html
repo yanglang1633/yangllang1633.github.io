@@ -16,10 +16,47 @@ h3{font-size:1rem;margin:0 0 12px 0;color:#1f2937;}
 .flex-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
 .form-item{flex:1;min-width:200px;}
 label{display:block;margin-bottom:6px;color:#444;font-size:14px;}
-.input-wrap{position:relative;}
-.input-wrap input{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px 36px 10px 10px;font-size:15px;background:#fff;outline:none;transition:border-color .2s;}
+
+/* 新的输入组样式（代替原生箭头） */
+.input-wrap{display:flex;align-items:center;}
+.input-wrap input{
+  flex:1;
+  border:1px solid #d1d5db;
+  border-radius:0;
+  padding:10px;
+  font-size:15px;
+  background:#fff;
+  outline:none;
+  text-align:center;
+  -moz-appearance:textfield;
+}
+.input-wrap input::-webkit-inner-spin-button,
+.input-wrap input::-webkit-outer-spin-button{-webkit-appearance:none;}
 .input-wrap input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15);}
-.input-suffix{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#666;pointer-events:none;font-size:13px;}
+
+.btn-step{
+  background:#e5e7eb;
+  border:none;
+  width:36px;
+  height:40px;
+  font-size:18px;
+  color:#374151;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  user-select:none;
+}
+.btn-step:active{background:#d1d5db;}
+.btn-minus{border-radius:8px 0 0 8px;margin-right:-1px;}
+.btn-plus{border-radius:0 8px 8px 0;margin-left:-1px;}
+
+.input-suffix{
+  margin-left:8px;
+  color:#666;
+  font-size:13px;
+  white-space:nowrap;
+}
 
 select.w-full{width:100%;border:1px solid #d1d5db;border-radius:8px;padding:10px;font-size:15px;background:#fff;outline:none;}
 select.w-full:focus{border-color:#2563eb;}
@@ -52,6 +89,7 @@ hr{border:none;border-top:1px solid #e5e7eb;margin:12px 0;}
   .card{padding:14px;}
   body{padding:8px;}
   h1{font-size:1.25rem;}
+  .btn-step{width:44px;height:44px;font-size:20px;}
 }
 </style>
 </head>
@@ -95,42 +133,54 @@ hr{border:none;border-top:1px solid #e5e7eb;margin:12px 0;}
 <div class="form-item">
 <label>车上实验 <span style="color:#888;font-size:12px;">0.5分/列</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="0.5" min="0" value="0" class="col-input" data-price="0.5">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">列</span>
 </div>
 </div>
 <div class="form-item">
 <label>内装检查 <span style="color:#888;font-size:12px;">0.5分/列</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="0.5" min="0" value="0" class="col-input" data-price="0.5">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">列</span>
 </div>
 </div>
 <div class="form-item">
 <label>车侧检车 <span style="color:#888;font-size:12px;">1.5分/列</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="0.5" min="0" value="0" class="col-input" data-price="1.5">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">列</span>
 </div>
 </div>
 <div class="form-item">
 <label>车下检车 <span style="color:#888;font-size:12px;">1.5分/列</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="0.5" min="0" value="0" class="col-input" data-price="1.5">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">列</span>
 </div>
 </div>
 <div class="form-item">
 <label>空调滤网 <span style="color:#888;font-size:12px;">1分/列</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="0.5" min="0" value="0" class="col-input" data-price="1">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">列</span>
 </div>
 </div>
 <div class="form-item">
 <label>钢簧检 <span style="color:#888;font-size:12px;">1分/列</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="0.5" min="0" value="0" class="col-input" data-price="1">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">列</span>
 </div>
 </div>
@@ -143,49 +193,63 @@ hr{border:none;border-top:1px solid #e5e7eb;margin:12px 0;}
 <div class="form-item">
 <label>机洗 <span style="color:#888;font-size:12px;">1分/次</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">次</span>
 </div>
 </div>
 <div class="form-item">
 <label>故障假设 <span style="color:#888;font-size:12px;">2分/个</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="2" data-unit="个">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">个</span>
 </div>
 </div>
 <div class="form-item">
 <label>处理故障 <span style="color:#888;font-size:12px;">2分/个</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="2" data-unit="个">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">个</span>
 </div>
 </div>
 <div class="form-item">
 <label>更换备品 <span style="color:#888;font-size:12px;">1分/件</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="件">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">件</span>
 </div>
 </div>
 <div class="form-item">
 <label>处理故障复检 <span style="color:#888;font-size:12px;">1分/件</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="件">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">件</span>
 </div>
 </div>
 <div class="form-item">
 <label>厂家整改复检 <span style="color:#888;font-size:12px;">1分/次</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">次</span>
 </div>
 </div>
 <div class="form-item">
 <label>消防巡查 <span style="color:#888;font-size:12px;">1分/次</span></label>
 <div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
 <input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
+<button type="button" class="btn-step btn-plus">+</button>
 <span class="input-suffix">次</span>
 </div>
 </div>
@@ -223,12 +287,30 @@ var toast=document.getElementById('toast');
 
 var modeMap={
 'stand10':{score:10,showName:'驻站10分',displayName:'驻站（10分）'},
-'stand6':{score:6,showName:'17:30-23:00驻站6分',displayName:'17:30-23:00 驻站（6分）'},
+'stand6':{score:6,showName:'17:30-23驻站6分',displayName:'17:30-23:00 驻站（6分）'},
 'stand4':{score:4,showName:'6:00-8:30驻站4分',displayName:'6:00-8:30 驻站（4分）'},
 'power':{score:5,showName:'断送电5分',displayName:'断送电'},
 'morningPower':{score:13,showName:'早起8分，断送电5分',displayName:'早起+断送电'},
 'follow':{score:0,showName:'跟活',displayName:'跟活'}
 };
+
+// 加减按钮逻辑
+document.querySelectorAll('.btn-step').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var wrap=this.parentElement;
+    var input=wrap.querySelector('input[type="number"]');
+    var step=parseFloat(input.step)||1;
+    var current=parseFloat(input.value)||0;
+    if(this.classList.contains('btn-minus')){
+      current=current-step;
+      if(current<0)current=0;
+    }else{
+      current=current+step;
+    }
+    input.value=current;
+    input.dispatchEvent(new Event('input'));
+  });
+});
 
 function showToast(msg){
 toast.textContent=msg;
@@ -246,12 +328,11 @@ resMode.textContent=modeInfo.displayName;
 var items=[];
 items.push(site+modeInfo.showName);
 
-// 按列作业（恢复原版展示：标签+数量+列+小计分+分）
 var columnScore=0;
 colInputs.forEach(function(input){
 var num=parseFloat(input.value)||0;
 var price=parseFloat(input.dataset.price);
-var itemScore=num*price; // 数量×单价
+var itemScore=num*price;
 columnScore+=itemScore;
 if(num>0){
 var label=input.parentElement.parentElement.querySelector('label').innerText.split(' ')[0];
@@ -259,57 +340,47 @@ items.push(label+num+'列'+itemScore+'分');
 }
 });
 
-// 按次/件作业（恢复原版展示：标签+数量+单位+小计分+分）
 var onceScore=0;
 onceInputs.forEach(function(input){
 var num=parseFloat(input.value)||0;
 var price=parseFloat(input.dataset.price);
-var unit=input.dataset.unit; // "次"/"个"/"件"
-var itemScore=num*price; // 数量×单价 ← 关键：这里一定乘了
+var unit=input.dataset.unit;
+var itemScore=num*price;
 onceScore+=itemScore;
 if(num>0){
 var label=input.parentElement.parentElement.querySelector('label').innerText.split(' ')[0];
-// 展示：标签+数量+单位+小计分+分，例如 "故障假设2个4分"
 items.push(label+num+unit+itemScore+'分');
 }
 });
 
 var lineStr=items.join('，');
 lineResult.textContent=lineStr;
-var totalRaw=modeInfo.score+columnScore+onceScore;
-totalScoreDom.textContent=totalRaw;
+totalScoreDom.textContent=modeInfo.score+columnScore+onceScore;
 }
 
 function copyText(){
 var txt=lineResult.textContent.trim();
-if(txt==='请填写作业数量'){showToast('暂无可复制内容，请先填写作业数据！');return;}
+if(txt==='请填写作业数量'){showToast('暂无可复制内容');return;}
 doCopy(txt,'结果已复制 ✓');
 }
 
 function copyTotalScore(){
 var modeKey=modeSel.value;
 var modeInfo=modeMap[modeKey];
-var colS=0;
-colInputs.forEach(function(i){colS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
-var onceS=0;
-onceInputs.forEach(function(i){onceS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
-var scoreText=String(modeInfo.score+colS+onceS);
-doCopy(scoreText,'总分已复制 ✓');
+var colS=0;colInputs.forEach(function(i){colS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
+var onceS=0;onceInputs.forEach(function(i){onceS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
+doCopy(String(modeInfo.score+colS+onceS),'总分已复制 ✓');
 }
 
 function doCopy(text,msg){
 if(navigator.clipboard&&window.isSecureContext){
-navigator.clipboard.writeText(text).then(function(){showToast(msg);},function(){manualCopy(text,msg);});
-}else{manualCopy(text,msg);}
-}
-
-function manualCopy(text,msg){
+navigator.clipboard.writeText(text).then(function(){showToast(msg);});
+}else{
 var temp=document.createElement('textarea');
-temp.value=text;
-document.body.appendChild(temp);
-temp.select();
-try{document.execCommand('copy');showToast(msg||'已复制 ✓');}catch(e){showToast('复制失败，请手动复制');}
-document.body.removeChild(temp);
+temp.value=text;document.body.appendChild(temp);temp.select();
+document.execCommand('copy');document.body.removeChild(temp);
+showToast(msg);
+}
 }
 
 function resetAll(){
