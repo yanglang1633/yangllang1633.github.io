@@ -253,6 +253,67 @@ hr{border:none;border-top:1px solid #e5e7eb;margin:12px 0;}
 <span class="input-suffix">次</span>
 </div>
 </div>
+<div class="form-item">
+<label>发现重大故障 <span style="color:#888;font-size:12px;">1分/次</span></label>
+<div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
+<input type="number" step="1" min="0" value="0" class="once-input" data-price="1" data-unit="次">
+<button type="button" class="btn-step btn-plus">+</button>
+<span class="input-suffix">次</span>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>每月承担职务加分（每项5分，每月添加一次即可）</h3>
+<div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-bottom:12px;font-size:13px;color:#92400e;">📌 此项为月度职务加分，每月添加一次即可</div>
+<div class="grid-row4">
+<div class="form-item">
+<label>月度考勤管理 <span style="color:#888;font-size:12px;">5分/月</span></label>
+<div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
+<input type="number" step="1" min="0" max="1" value="0" class="duty-input" data-price="5">
+<button type="button" class="btn-step btn-plus">+</button>
+<span class="input-suffix">项</span>
+</div>
+</div>
+<div class="form-item">
+<label>月度消防管理 <span style="color:#888;font-size:12px;">5分/月</span></label>
+<div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
+<input type="number" step="1" min="0" max="1" value="0" class="duty-input" data-price="5">
+<button type="button" class="btn-step btn-plus">+</button>
+<span class="input-suffix">项</span>
+</div>
+</div>
+<div class="form-item">
+<label>月度工具管理 <span style="color:#888;font-size:12px;">5分/月</span></label>
+<div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
+<input type="number" step="1" min="0" max="1" value="0" class="duty-input" data-price="5">
+<button type="button" class="btn-step btn-plus">+</button>
+<span class="input-suffix">项</span>
+</div>
+</div>
+<div class="form-item">
+<label>月度培训管理 <span style="color:#888;font-size:12px;">5分/月</span></label>
+<div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
+<input type="number" step="1" min="0" max="1" value="0" class="duty-input" data-price="5">
+<button type="button" class="btn-step btn-plus">+</button>
+<span class="input-suffix">项</span>
+</div>
+</div>
+<div class="form-item">
+<label>月度物资管理 <span style="color:#888;font-size:12px;">5分/月</span></label>
+<div class="input-wrap">
+<button type="button" class="btn-step btn-minus">−</button>
+<input type="number" step="1" min="0" max="1" value="0" class="duty-input" data-price="5">
+<button type="button" class="btn-step btn-plus">+</button>
+<span class="input-suffix">项</span>
+</div>
+</div>
 </div>
 </div>
 
@@ -279,6 +340,7 @@ var siteSel=document.getElementById('site');
 var modeSel=document.getElementById('mode');
 var colInputs=document.querySelectorAll('.col-input');
 var onceInputs=document.querySelectorAll('.once-input');
+var dutyInputs=document.querySelectorAll('.duty-input');
 var resSite=document.getElementById('resSite');
 var resMode=document.getElementById('resMode');
 var lineResult=document.getElementById('lineResult');
@@ -287,7 +349,7 @@ var toast=document.getElementById('toast');
 
 var modeMap={
 'stand10':{score:10,showName:'驻站10分',displayName:'驻站（10分）'},
-'stand6':{score:6,showName:'17:30-23驻站6分',displayName:'17:30-23:00 驻站（6分）'},
+'stand6':{score:6,showName:'17:30-23:00驻站6分',displayName:'17:30-23:00 驻站（6分）'},
 'stand4':{score:4,showName:'6:00-8:30驻站4分',displayName:'6:00-8:30 驻站（4分）'},
 'power':{score:5,showName:'断送电5分',displayName:'断送电'},
 'morningPower':{score:13,showName:'早起8分，断送电5分',displayName:'早起+断送电'},
@@ -353,9 +415,21 @@ items.push(label+num+unit+itemScore+'分');
 }
 });
 
+var dutyScore=0;
+dutyInputs.forEach(function(input){
+var num=parseInt(input.value,10)||0;
+var price=parseInt(input.dataset.price,10);
+var itemScore=num*price;
+dutyScore+=itemScore;
+if(num>0){
+var label=input.parentElement.parentElement.querySelector('label').innerText.split(' ')[0];
+items.push(label+itemScore+'分');
+}
+});
+
 var lineStr=items.join('，');
 lineResult.textContent=lineStr;
-totalScoreDom.textContent=modeInfo.score+columnScore+onceScore;
+totalScoreDom.textContent=modeInfo.score+columnScore+onceScore+dutyScore;
 }
 
 function copyText(){
@@ -369,7 +443,8 @@ var modeKey=modeSel.value;
 var modeInfo=modeMap[modeKey];
 var colS=0;colInputs.forEach(function(i){colS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
 var onceS=0;onceInputs.forEach(function(i){onceS+=(parseFloat(i.value)||0)*parseFloat(i.dataset.price);});
-doCopy(String(modeInfo.score+colS+onceS),'总分已复制 ✓');
+var dutyS=0;dutyInputs.forEach(function(i){dutyS+=(parseInt(i.value,10)||0)*parseInt(i.dataset.price,10);});
+doCopy(String(modeInfo.score+colS+onceS+dutyS),'总分已复制 ✓');
 }
 
 function doCopy(text,msg){
@@ -388,6 +463,7 @@ siteSel.selectedIndex=0;
 modeSel.selectedIndex=0;
 colInputs.forEach(function(i){i.value=0;});
 onceInputs.forEach(function(i){i.value=0;});
+dutyInputs.forEach(function(i){i.value=0;});
 calc();
 showToast('已重置');
 }
@@ -396,6 +472,7 @@ siteSel.addEventListener('change',calc);
 modeSel.addEventListener('change',calc);
 colInputs.forEach(function(i){i.addEventListener('input',calc);});
 onceInputs.forEach(function(i){i.addEventListener('input',calc);});
+dutyInputs.forEach(function(i){i.addEventListener('input',calc);});
 calc();
 </script>
 </body>
